@@ -1,0 +1,70 @@
+<mxfile host="65bd71144e">
+    <diagram id="G7lkGIXSia6hQowH5dFk" name="Page-1">
+        <mxGraphModel dx="1751" dy="1144" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="10000" pageHeight="10000" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="File Organizer" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="660" y="130" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="CockroachDB" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="430" y="310" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="GPT-4" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1010" y="790" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="GPT-3.5-16k" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="910" y="490" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="GPT-3.5-16k" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1040" y="490" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="GPT-3.5-16k" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1170" y="490" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="School&lt;br&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" vertex="1" parent="1">
+                    <mxGeometry x="870" y="190" width="80" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="Personal" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" vertex="1" parent="1">
+                    <mxGeometry x="1040" y="190" width="80" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Photos" style="shape=card;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1200" y="190" width="80" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" vertex="1" parent="1">
+                    <mxGeometry x="270" y="860" width="80" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" style="edgeStyle=none;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="13" target="5">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="History WW2" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="820" y="330" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="School-History-2022/05/23" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="890" y="640" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="School" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1030" y="920" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="2022" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1100" y="1000" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="History" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1170" y="1100" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="WW2" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1240" y="1180" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="GPT-4" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="885" y="1320" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="GPT-4" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1035" y="1320" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="GPT-4" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1175" y="1320" width="120" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
