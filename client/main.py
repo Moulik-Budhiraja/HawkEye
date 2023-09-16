@@ -82,7 +82,7 @@ def imageProcess(transcription):
                 normalized_2d_point = project_3d_to_2d(tracker.current_gaze, hfov, vfov)
                 pixel_point = viewport_transform(normalized_2d_point, frame.shape[1], frame.shape[0])
 
-                centre_point = (600 -pixel_point[0], 175 -pixel_point[1])
+                centre_point = (550 -pixel_point[0], 175 -pixel_point[1])
 
                 cv2.circle(frame,  centre_point, 5, (0, 0, 255), -1)
 
