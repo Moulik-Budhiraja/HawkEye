@@ -1,5 +1,5 @@
-Lib
-Scripts
+Lib/
+Scripts/
 .env
 pyvenv.cfg
 Include
