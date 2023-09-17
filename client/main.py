@@ -5,6 +5,8 @@ import cv2
 import numpy as np
 
 from multiprocessing import Process, Manager
+from threading import Thread
+from function_manager import *
 import time
 import io
 import os
@@ -17,6 +19,12 @@ load_dotenv()
 
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
+
+transcription_queue = Queue()
+transcription_result_queue = Queue()
+transcript_queued = False
+transcripts_processed = 0
+
 
 def capture_frame_to_bytesio(cap):
     """
@@ -57,18 +65,40 @@ def viewport_transform(point, screen_width, screen_height):
     return int(x_double_prime), int(y_double_prime)
 
 
+def handle_transcriptions():
+    global transcript_queued, transcripts_processed
+
+    while True:
+        if not transcription_queue.empty():
+            transcription = transcription_queue.get()
+            processed_transcript = process_inputs(transcription)
+
+            result = get_function_call(processed_transcript[transcripts_processed + 1:])
+
+            print(f"{processed_transcript[transcripts_processed + 1:]} {transcripts_processed}")
+
+            transcription_result_queue.put(result)
+            transcripts_processed = len(processed_transcript) - 1
+        else: 
+            transcript_queued = False
+            time.sleep(0.1)
+
+
 def imageProcess(transcription):
+    global transcript_queued, transcripts_processed
+
     cap = cv2.VideoCapture(1)
 
     if not cap.isOpened():
         print("Error: Could not open camera.")
         return
 
-    last_capture = time.time()
-
     tracker = eye_tracker.FrontendData()
 
-    position_for_later = ()
+    transcription_thread = Thread(target=handle_transcriptions)
+    transcription_thread.start()
+
+    last_transcript = ""
 
     try:
         while True:
@@ -91,29 +121,24 @@ def imageProcess(transcription):
                 cv2.rectangle(frame, (centre_point[0] - box_size * 4, centre_point[1] - box_size * 3), (centre_point[0] + box_size * 4, centre_point[1] + box_size * 3), (0, 255, 0), 2)
 
 
-
             cv2.imshow('Camera Feed', frame)
             
-
-            # # Capture a frame to BytesIO 
-            # if time.time() - last_capture > 2:
-            #     bytesio_obj = capture_frame_to_bytesio(cap)
-            #     if bytesio_obj:
-            #         print("Captured frame to BytesIO object.")
-
-            #     last_capture = time.time()
-
-
-
-            # Break the loop if the user presses the 'q' key
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-            # os.system('cls' if os.name=='nt' else 'clear')
-            
-            
-            # print(transcription.value)
-            # print('', end='', flush=True)
+            if not transcription.value == last_transcript:
+                if last_transcript.split("\n")[-1] != transcription.value.split("\n")[-1]:
+                    transcripts_processed = min(len(transcription.value.split("\n")) - 2, transcripts_processed) 
+
+                last_transcript = transcription.value
+
+            if not transcript_queued:
+                transcript_queued = True
+                transcription_queue.put(transcription.value)
+
+            if not transcription_result_queue.empty():
+                print(transcription_result_queue.get())
+
 
     finally:
         cap.release()
@@ -213,6 +238,8 @@ def audioProcess(shared_transcription):
                 time.sleep(0.25)
         except KeyboardInterrupt:
             break
+
+
 
 def main():
     manager = Manager()
