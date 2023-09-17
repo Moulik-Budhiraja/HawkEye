@@ -4,3 +4,10 @@ Scripts/
 pyvenv.cfg
 Include
 __pycache__
+
+
+# GOOGLE CLOUD
+dragonflai-bf6c3954469d.json
+rythmhacks-ani-ca07719bd531.json
+serviceAccountKey.json
+serviceAccountKey3.json

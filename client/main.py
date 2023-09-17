@@ -3,10 +3,12 @@ import openai
 import eye_tracker
 import cv2
 import numpy as np
+import pyttsx3
 
 from multiprocessing import Process, Manager
 from threading import Thread
 from function_manager import *
+from vision import *
 import time
 import io
 import os
@@ -25,6 +27,7 @@ transcription_result_queue = Queue()
 transcript_queued = False
 transcripts_processed = 0
 
+engine = pyttsx3.init()
 
 def capture_frame_to_bytesio(cap):
     """
@@ -75,7 +78,7 @@ def handle_transcriptions():
 
             result = get_function_call(processed_transcript[transcripts_processed + 1:])
 
-            print(f"{processed_transcript[transcripts_processed + 1:]} {transcripts_processed}")
+            # print(f"{processed_transcript[transcripts_processed + 1:]} {transcripts_processed}")
 
             transcription_result_queue.put(result)
             transcripts_processed = len(processed_transcript) - 1
@@ -84,7 +87,7 @@ def handle_transcriptions():
             time.sleep(0.1)
 
 
-def imageProcess(transcription):
+def imageProcess(transcription, to_speak, is_mic_on):
     global transcript_queued, transcripts_processed
 
     cap = cv2.VideoCapture(1)
@@ -93,12 +96,13 @@ def imageProcess(transcription):
         print("Error: Could not open camera.")
         return
 
-    tracker = eye_tracker.FrontendData()
+    tracker = eye_tracker.FrontendData(to_speak, is_mic_on)
 
-    transcription_thread = Thread(target=handle_transcriptions)
+    transcription_thread = Thread(target=handle_transcriptions, daemon=True)
     transcription_thread.start()
 
     last_transcript = ""
+
 
     try:
         while True:
@@ -136,15 +140,47 @@ def imageProcess(transcription):
                 transcript_queued = True
                 transcription_queue.put(transcription.value)
 
-            if not transcription_result_queue.empty():
-                print(transcription_result_queue.get())
+            if not transcription_result_queue.empty() and to_speak.value == "":
+                command, context = transcription_result_queue.get()
+
+                if command == "ocr":
+                    print("OCR")
+
+                    buffer = capture_frame_to_bytesio(cap)
+
+                    try:
+                        # Get partial buffer of target area
+                        image = cv2.imdecode(np.frombuffer(buffer.getbuffer(), np.uint8), cv2.IMREAD_UNCHANGED)
+                        target_image = image[centre_point[1] - box_size * 3:centre_point[1] + box_size * 3, centre_point[0] - box_size * 4:centre_point[0] + box_size * 4]
+
+
+                        _, target_buffer = cv2.imencode(".jpg", target_image)
+                        target_image_buffer = io.BytesIO(target_buffer)                    
+
+                        response = parse_double_ocr(buffer, target_image_buffer, context)
+
+                    except Exception:
+                        response = parse_ocr(ocr(buffer), context)
+
+
+                    print(response)
+                    to_speak.value = response
+
+                if command == "ai_answer":
+                    print("AI Answer", context)
+
+                    print(context)
+                    to_speak.value = context
+
+
+
 
 
     finally:
         cap.release()
         cv2.destroyAllWindows()
 
-def audioProcess(shared_transcription):
+def audioProcess(shared_transcription, to_speak, is_mic_on):
     phrase_time = None
 
     last_sample = bytes()
@@ -173,6 +209,10 @@ def audioProcess(shared_transcription):
         Threaded callback function to recieve audio data when recordings finish.
         audio: An AudioData containing the recorded bytes.
         """
+
+        if to_speak.value != "" or not is_mic_on.value:
+            return
+
         # Grab the raw bytes and push it into the thread safe queue.
         data = audio.get_raw_data()
         data_queue.put(data)
@@ -187,6 +227,7 @@ def audioProcess(shared_transcription):
     while True:
         try:
             now = datetime.utcnow()
+
             # Pull raw recorded audio from the queue.
             if not data_queue.empty():
                 phrase_complete = False
@@ -239,17 +280,28 @@ def audioProcess(shared_transcription):
         except KeyboardInterrupt:
             break
 
+def ttsProcess(to_speak):
+    while True:
+        if not to_speak.value == "":
+            engine.say(to_speak.value)
+            engine.runAndWait()
+            time.sleep(0.5)
+            to_speak.value = ""
 
 
 def main():
     manager = Manager()
     shared_transcription = manager.Value(ctypes.c_char_p, "")
+    to_speak = manager.Value(ctypes.c_char_p, "")
+    is_mic_on = manager.Value(ctypes.c_bool, True)
 
-    cv2_process = Process(target=imageProcess, args=(shared_transcription,))
-    audio_process = Process(target=audioProcess, args=(shared_transcription,))
+    cv2_process = Process(target=imageProcess, args=(shared_transcription, to_speak, is_mic_on), daemon=True)
+    audio_process = Process(target=audioProcess, args=(shared_transcription, to_speak, is_mic_on), daemon=True)
+    tts_process = Process(target=ttsProcess, args=(to_speak,), daemon=True)
 
     cv2_process.start()
     audio_process.start()
+    tts_process.start()
 
     cv2_process.join()
 
