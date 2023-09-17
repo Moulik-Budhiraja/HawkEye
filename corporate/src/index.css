@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  color: whitesmoke;
+  /*   --dot-bg: black;
+  --dot-color: rgb(51, 46, 46);
+  --dot-size: 1px;
+  --dot-space: 200px;
+  background:
+    linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
+    linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
+    var(--dot-color); */
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: linear-gradient(to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+}
+
+@keyframes move-and-enlarge {
+  0% {
+    transform: translateY(0) scale(0.8);
+  }
+
+  100% {
+    transform: translateY(-50px) scale(1);
+    /* Move up 20px and scale to 110% */
+  }
+}
+
+.animate-move-and-enlarge {
+  animation: move-and-enlarge 1s ease-in-out forwards;
+}
+
+.bg-nature-1 {
+  background-image: url(bg.jpg);
+  box-shadow: inset 0 -10px 200px rgba(0, 0, 0, 0.7), inset 0 -10px 1000px rgba(0, 0, 0, 0.7);
+}
+
+.bg-hovers {
+  transition: background-color 0.5s ease-in-out;
+  /* Transition property */
+
+}
+
+.bg-hovers:hover {
+  background-color: rgb(82 82 82);
+  /*bg-neutral-600*/
+}
+
+.display-effect {
+  opacity: 0;
+  display: none;
+  transition: opacity 12s ease;
+  /* Adjust the duration and timing function as needed */
+}
+
+.display-effect.show {
+  opacity: 1;
+  display: block;
+}
