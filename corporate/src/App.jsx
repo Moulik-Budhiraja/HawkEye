@@ -1,10 +1,4 @@
-import {
-	EffectFade,
-	Scrollbar,
-	A11y,
-	Mousewheel,
-	Parallax,
-} from 'swiper/modules';
+import { Scrollbar, Mousewheel, Parallax } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Cards from './Components/Cards';
 import FAQ from './Components/FAQ';

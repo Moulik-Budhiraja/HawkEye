@@ -48,7 +48,7 @@ body {
 }
 
 .bg-nature-1 {
-  background-image: url(bg.jpg);
+  background-image: url("https://images.unsplash.com/photo-1533113354171-490d836238e3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1935&q=80");
   box-shadow: inset 0 -10px 200px rgba(0, 0, 0, 0.7), inset 0 -10px 1000px rgba(0, 0, 0, 0.7);
 }
 
