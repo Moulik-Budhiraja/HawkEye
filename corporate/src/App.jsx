@@ -90,7 +90,9 @@ function App() {
 		>
 			{data.map((item, index) => (
 				<SwiperSlide
-					className='w-full h-full pt-8 pl-12 pr-12 bg-black bg-center bg-cover bg-nature-1'
+					className={
+						'w-full h-full pt-8 pl-12 pr-12 bg-black bg-center bg-cover bg-[url(./bg.jpg)]'
+					}
 					key={index}
 				>
 					{item}
